@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by 2017 on 07/02/2017.
@@ -21,6 +22,7 @@ public class ChatService
 {
     private final  static String USER_DEFAULT_IMAGE = "C:\\Users\\2017\\intelijProject\\chatApp\\UsersImage\\default.jpg";
     private final  static String USER_IMAGE = "C:\\Users\\2017\\intelijProject\\chatApp\\UsersImage\\";
+    private final  static String ROOM_IMAGE = "C:\\Users\\2017\\intelijProject\\chatApp\\RoomImage\\";
     private final  static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     private final  static String AUTH_KEY_FCM = "AAAAv0wpI3I:APA91bGnomehpgdXdkoBVBo1BlEhF-OSKe2XDECDhj5M7pHmbGTi2i4kiV4M68v5l7adY71_An5YyGjGAs1Zqp7KeSrGS2kLOOUTBs-XrmPqnkaZvazxkqXWsmUsWPN1L21wF_ZHv7Dz";
 
@@ -126,14 +128,43 @@ public class ChatService
 
 
         Gson gson = new Gson();
+        System.out.print(imageByte);
         ImageByte image = gson.fromJson(imageByte, ImageByte.class);
         OutputStream imageFile = null;
         imageFile = new FileOutputStream(USER_IMAGE + phoneNumber + ".jpg");
         imageFile.write(image.getImage());
         imageFile.flush();
         imageFile.close();
+    }
 
-
-
+    @POST
+    @Path("/sendImageMessage/{fromPhoneNumber}/{toPhoneNumber}/{time}")
+    public void sendImageMessage( @PathParam("fromPhoneNumber") String fromPhoneNumber ,@PathParam("toPhoneNumber") String toPhoneNumber ,@PathParam("time") String time, String imageByte ) throws IOException
+    {
+        try {
+            String path = ROOM_IMAGE+fromPhoneNumber+"&"+toPhoneNumber ;
+            Gson gson = new Gson();
+            System.out.print(imageByte);
+            ImageByte image = gson.fromJson(imageByte, ImageByte.class);
+            File dir = new File(path);
+            if(!dir.exists())
+            {
+                dir.mkdir();
+            }
+            UUID uuid = UUID.randomUUID();
+            OutputStream imageFile = null;
+            imageFile = new FileOutputStream(path +"\\"+ uuid.toString()+ ".jpg");
+            //imageFile = new FileOutputStream(USER_IMAGE + "sanad_haj_eee" + ".jpg");
+            imageFile.write(image.getImage());
+            imageFile.flush();
+            imageFile.close();
+            String message = "ImageMessage:"+uuid.toString();
+            MessageOverNetwork messageOverNetwork = new MessageOverNetwork(toPhoneNumber,fromPhoneNumber,message,time);
+            pushMessage(gson.toJson(messageOverNetwork));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
