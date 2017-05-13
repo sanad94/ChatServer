@@ -14,6 +14,7 @@
           <element id="library" level="project" name="mysql-connector-java-5.1.40-bin" />
           <element id="library" level="project" name="aopalliance-repackaged-2.5.0-b32" />
           <element id="library" level="project" name="validation-api-1.1.0.Final" />
+          <element id="library" level="project" name="javaee-api-7.0" />
         </element>
       </element>
     </root>

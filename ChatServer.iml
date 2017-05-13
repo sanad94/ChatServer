@@ -26,5 +26,6 @@
     <orderEntry type="library" name="jersey-client" level="project" />
     <orderEntry type="library" name="gson-2.2.2" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.40-bin" level="project" />
+    <orderEntry type="library" name="javaee-api-7.0" level="project" />
   </component>
 </module>

@@ -28,8 +28,9 @@ public class ChatService
 
     @GET
     public String defaults()
-    {
+    {System.out.print("so");
         return "please specify which service you want" ;
+
     }
 
     @Path("/UsersTokens")
