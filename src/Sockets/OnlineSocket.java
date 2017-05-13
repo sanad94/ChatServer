@@ -1,12 +1,13 @@
 package Sockets;
 
+import Model.Data;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by 2017 on 13/05/2017.
@@ -15,7 +16,8 @@ import java.util.Set;
 @ServerEndpoint("/echo")
 public class OnlineSocket
 {
-    private Set<String> onlineUsers = Collections.synchronizedSet(new HashSet<>());
+    private ConcurrentHashMap<String,String> onlineUsers = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String,Set<String>> updateUsers = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session)
@@ -26,15 +28,45 @@ public class OnlineSocket
     @OnMessage
     public void onMessage(String message, Session session) throws IOException
     {
-        if(message.contains("Connect:"))
+        onlineUsers.put("059-965-1075","13-מאי-2017 11:27 PM");
+        String key = message.substring(0,message.indexOf(':')+1);
+        if(key.equals("Connect:"))
         {
-            onlineUsers.add(message.replace("Connect:",""));
+            onlineUsers.put(message.replace("Connect:",""),"online");
         }
-        else if(message.contains("IsConnected:"))
+        else if(key.equals("IsConnected:"))
         {
-          boolean isConnected =  onlineUsers.contains(message.replace("IsConnected:",""));
-          session.getBasicRemote().sendText("IsConnected:"+String.valueOf(isConnected));
-          System.out.println("Message retrive " + session.getId() + ": " + String.valueOf(isConnected));
+            String myNumber = message.substring(message.indexOf('/')+1,message.length());
+            String hisNumber =  message.substring(message.indexOf(':')+1,message.indexOf(','));
+          String status = onlineUsers.get(hisNumber);
+          if(updateUsers.containsKey(myNumber))
+          {
+              Set<String> relatedUsers = updateUsers.get(myNumber);
+              relatedUsers.add(hisNumber);
+              updateUsers.put(myNumber,relatedUsers);
+          }
+          else
+          {
+              Set<String> relatedUsers = Collections.synchronizedSet(new HashSet<>());
+              relatedUsers.add(hisNumber);
+              updateUsers.put(myNumber,relatedUsers);
+          }
+          session.getBasicRemote().sendText("IsConnected:"+status);
+          System.out.println("Message retrive " + session.getId() + ": " + status);
+        }
+        else if(key.equals("DisConnect:"))
+        {
+            String number = message.replace("DisConnect:","");
+            String status1 = onlineUsers.get(number);
+            SimpleDateFormat dateformat = new SimpleDateFormat("dd-MMM-yyyy hh:mm aa");
+            Date date = new Date();
+            onlineUsers.put(number,dateformat.format(date));
+            Set<String> relatedUsers1=    updateUsers.get(number);
+            for(String k : relatedUsers1)
+            {
+                session.getBasicRemote().sendText("DisConnect:"+status1);
+            }
+            System.out.println("Message retrive " + session.getId() + ": " + dateformat.format(date));
         }
         System.out.println("Message from " + session.getId() + ": " + message);
     }
