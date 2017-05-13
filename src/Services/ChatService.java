@@ -121,6 +121,20 @@ public class ChatService
         return image;
     }
 
+    @GET
+    @Path("/getRoomImage/{uuid}/{fromPhoneNumber}/{toPhoneNumber}")
+    @Produces("image/jpg")
+    public File getRoomImage( @PathParam("uuid") String uuid ,@PathParam("fromPhoneNumber") String fromPhoneNumber ,@PathParam("toPhoneNumber") String toPhoneNumber  )
+    {
+        String path = ROOM_IMAGE + hashCodeFile(fromPhoneNumber,toPhoneNumber)+"\\"+uuid+".jpg";
+        File image = new File(path);
+        if(!image.exists())
+        {
+            image = new File(USER_DEFAULT_IMAGE);
+        }
+        return image;
+    }
+
     @POST
     @Path("/settImage/{phoneNumber}")
     public void settImage( @PathParam("phoneNumber") String phoneNumber , String imageByte ) throws IOException
@@ -142,7 +156,8 @@ public class ChatService
     public void sendImageMessage( @PathParam("fromPhoneNumber") String fromPhoneNumber ,@PathParam("toPhoneNumber") String toPhoneNumber ,@PathParam("time") String time, String imageByte ) throws IOException
     {
         try {
-            String path = ROOM_IMAGE+fromPhoneNumber+"&"+toPhoneNumber ;
+            String path = ROOM_IMAGE + hashCodeFile(fromPhoneNumber,toPhoneNumber) ;
+            System.out.print(path);
             Gson gson = new Gson();
             System.out.print(imageByte);
             ImageByte image = gson.fromJson(imageByte, ImageByte.class);
@@ -154,7 +169,6 @@ public class ChatService
             UUID uuid = UUID.randomUUID();
             OutputStream imageFile = null;
             imageFile = new FileOutputStream(path +"\\"+ uuid.toString()+ ".jpg");
-            //imageFile = new FileOutputStream(USER_IMAGE + "sanad_haj_eee" + ".jpg");
             imageFile.write(image.getImage());
             imageFile.flush();
             imageFile.close();
@@ -167,4 +181,9 @@ public class ChatService
             e.printStackTrace();
         }
     }
+    private int hashCodeFile(String fromPhoneNumber , String toPhoneNumber)
+    {
+        return Integer.valueOf(fromPhoneNumber.replaceAll("-","")) * Integer.valueOf(toPhoneNumber.replaceAll("-",""));
+    }
+
 }
