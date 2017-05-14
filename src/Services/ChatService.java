@@ -153,15 +153,20 @@ public class ChatService
     }
 
     @POST
-    @Path("/sendImageMessage/{fromPhoneNumber}/{toPhoneNumber}/{time}")
+    @Path("/sendImageMessage")
+    public void sendImageMessage( String imageMessage ) throws IOException
+/*    @Path("/sendImageMessage/{fromPhoneNumber}/{toPhoneNumber}/{time}")
     public void sendImageMessage( @PathParam("fromPhoneNumber") String fromPhoneNumber ,@PathParam("toPhoneNumber") String toPhoneNumber ,@PathParam("time") String time, String imageByte ) throws IOException
+    {*/
     {
+
         try {
-            String path = ROOM_IMAGE + hashCodeFile(fromPhoneNumber,toPhoneNumber) ;
-            System.out.print(path);
             Gson gson = new Gson();
-            System.out.print(imageByte);
-            ImageByte image = gson.fromJson(imageByte, ImageByte.class);
+            ImageMessageOverNetwork image = gson.fromJson(imageMessage,ImageMessageOverNetwork.class);
+            String time = image.getTime();
+            String fromPhoneNumber = image.getFromPhoneNumber();
+            String toPhoneNumber = image.getToPhoneNumber();
+            String path = ROOM_IMAGE + hashCodeFile(fromPhoneNumber,toPhoneNumber) ;
             File dir = new File(path);
             if(!dir.exists())
             {
@@ -170,7 +175,7 @@ public class ChatService
             UUID uuid = UUID.randomUUID();
             OutputStream imageFile = null;
             imageFile = new FileOutputStream(path +"\\"+ uuid.toString()+ ".jpg");
-            imageFile.write(image.getImage());
+            imageFile.write(image.getImageByte());
             imageFile.flush();
             imageFile.close();
             String message = "ImageMessage:"+uuid.toString();
