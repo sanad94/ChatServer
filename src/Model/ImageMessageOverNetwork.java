@@ -57,4 +57,10 @@ public class ImageMessageOverNetwork
     public void setImageByte(byte[] imageByte) {
         this.imageByte = imageByte;
     }
+
+    @Override
+    public int hashCode()
+    {
+        return Integer.valueOf(fromPhoneNumber.replaceAll("-","")) * Integer.valueOf(toPhoneNumber.replaceAll("-",""));
+    }
 }
