@@ -2,7 +2,6 @@ package SocketsOperations;
 
 import Model.OnlineModel;
 import com.google.gson.Gson;
-
 import javax.websocket.Session;
 import java.io.IOException;
 import java.text.SimpleDateFormat;

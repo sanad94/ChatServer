@@ -1,5 +1,6 @@
 package DB;
 
+import DB.MyConnection;
 import Model.MyContacts;
 import Model.UsersTokens;
 
