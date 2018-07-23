@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
 
+
     <build>
         <plugins>
             <plugin>
@@ -19,7 +20,16 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>src\main\web\WEB-INF\web.xml</webXml>
+                </configuration>
+            </plugin>
         </plugins>
+
     </build>
 
     <dependencies>
