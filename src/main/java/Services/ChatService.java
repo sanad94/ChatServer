@@ -36,7 +36,7 @@ public class ChatService
 
     @Path("/UsersTokens")
     @POST
-    public void addUsersTokens(String usersTokens) throws SQLException
+    public void addUsersTokens(String usersTokens) throws Exception
     {
         Gson gson = new Gson();
         UsersTokens userToken = gson.fromJson(usersTokens, UsersTokens.class);

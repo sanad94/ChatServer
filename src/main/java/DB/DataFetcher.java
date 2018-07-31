@@ -12,14 +12,25 @@ import java.util.ArrayList;
 public class DataFetcher
 {
 
-    public static void insertNewUser(UsersTokens userToken )
+    public static void insertNewUser(UsersTokens userToken ) throws Exception
     {
         DB database = MongoConnection.getDB();
         DBCollection collection = database.getCollection(Users.Collection.toString());
-        Gson gson = new Gson();
-        String json = gson.toJson(userToken);
-        DBObject dbObject = (DBObject)JSON.parse(json);
-        collection.insert(dbObject);
+        BasicDBObject fields = new BasicDBObject();
+        fields.put(Users.PhoneNumber.toString(), userToken.getPhoneNumber());
+        DBObject doc = collection.findOne(fields);
+
+        if(doc==null)
+        {
+            Gson gson = new Gson();
+            String json = gson.toJson(userToken);
+            DBObject dbObject = (DBObject)JSON.parse(json);
+            collection.insert(dbObject);
+        }
+        else
+        {
+            throw new Exception("user exist");
+        }
     }
 
     public static void updateUserToken(UsersTokens userToken )
