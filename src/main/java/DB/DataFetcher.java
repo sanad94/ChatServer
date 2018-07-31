@@ -69,7 +69,7 @@ public class DataFetcher
             BasicDBObject fields = new BasicDBObject();
             fields.put(Users.PhoneNumber.toString(),number );
             DBObject doc = collection.findOne(fields);
-            if(doc==null)
+            if(doc!=null)
             {
                 myContacts.setPhoneNumber(number);
                 validateContactList.add(myContacts);
