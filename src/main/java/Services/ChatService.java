@@ -1,5 +1,6 @@
 package Services;
 
+import DB.DataFetcher;
 import DB.Operations;
 import Model.*;
 import com.google.gson.Gson;
@@ -39,14 +40,14 @@ public class ChatService
     {
         Gson gson = new Gson();
         UsersTokens userToken = gson.fromJson(usersTokens, UsersTokens.class);
-        Operations.insertNewUser(userToken);
+        DataFetcher.insertNewUser(userToken);
     }
 
     @Path("/DeleteUser/{phoneNumber}")
     @GET
     public void deleteUser(@PathParam("phoneNumber") String phoneNumber) throws SQLException
     {
-        Operations.deleteUser(phoneNumber);
+        DataFetcher.deleteUser(phoneNumber);
     }
 
     @Path("/UpdateUsersTokens")
@@ -55,7 +56,7 @@ public class ChatService
     {
         Gson gson = new Gson();
         UsersTokens userToken = gson.fromJson(usersTokens, UsersTokens.class);
-        Operations.updateUserToken(userToken);
+        DataFetcher.updateUserToken(userToken);
     }
 
     @Path("/PushMessage")
@@ -66,7 +67,7 @@ public class ChatService
         {
             Gson gson = new Gson();
             MessageOverNetwork message = gson.fromJson(messageOverNetwork, MessageOverNetwork.class);
-            String userToken = Operations.getUserToken(message.getToPhoneNumber());
+            String userToken = DataFetcher.getUserToken(message.getToPhoneNumber());
             Data data = new Data(message.getFromPhoneNumber(),message.getTime(),message.getMessage());
             Notify notify = new Notify(userToken,data);
             String write = gson.toJson(notify);
@@ -91,8 +92,6 @@ public class ChatService
         catch (IOException e)
         {
             e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -103,7 +102,7 @@ public class ChatService
         System.out.print(contactList);
         Gson gson = new Gson();
         ArrayList<MyContacts> contactsLinkedList = gson.fromJson(contactList, new TypeToken<ArrayList<MyContacts>>() {}.getType());
-        ArrayList<MyContacts> validateContactList = Operations.validateContactList(contactsLinkedList);
+        ArrayList<MyContacts> validateContactList = DataFetcher.validateContactList(contactsLinkedList);
         String json = gson.toJson(validateContactList);
         System.out.print(json);
         return json;

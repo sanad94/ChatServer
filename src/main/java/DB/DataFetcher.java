@@ -56,7 +56,7 @@ public class DataFetcher
     }
 
 
-    public static ArrayList<MyContacts> validateContactList(ArrayList<MyContacts> contacts) 
+    public static ArrayList<MyContacts> validateContactList(ArrayList<MyContacts> contacts)
     {
         ArrayList<MyContacts> validateContactList = new ArrayList<>();
         DB database = MongoConnection.getDB();
