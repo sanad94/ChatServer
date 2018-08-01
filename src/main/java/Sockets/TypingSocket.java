@@ -25,7 +25,7 @@ public class TypingSocket
         SocketsModel typingRequest = gson.fromJson(message, SocketsModel.class);
         SocketsModel typingResponce = new SocketsModel();
         String key = typingRequest.getService();
-        boolean typing = Boolean.getBoolean(typingRequest.getStatus());
+        boolean typing = Boolean.parseBoolean(typingRequest.getStatus());
         String myNumber = typingRequest.getFromPhoneNumber();
         String hisNumber =  typingRequest.getToPhoneNumber();
 
