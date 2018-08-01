@@ -1,6 +1,6 @@
 package SocketsOperations;
 
-import Model.OnlineModel;
+import Model.SocketsModel;
 import com.google.gson.Gson;
 import javax.websocket.Session;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class UsersOnline
         String status = dateformat.format(date);
         onlineUsers.put(phoneNumber,status);
         ArrayList<String> relatedUsers = updateUsers.get(phoneNumber);
-        OnlineModel responceOnline = new OnlineModel();
+        SocketsModel responceOnline = new SocketsModel();
         responceOnline.setService("OffLine");
         responceOnline.setStatus(status);
         responceOnline.setFromPhoneNumber(phoneNumber);

@@ -1,14 +1,13 @@
 package Sockets;
 
-import Model.OnlineModel;
+import Model.SocketsModel;
 import SocketsOperations.UsersOnline;
 import com.google.gson.Gson;
-
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
-@ServerEndpoint("/echo")
+@ServerEndpoint("/OnlineSocket")
 public class OnlineSocket
 {
     private static UsersOnline usersOnline = new UsersOnline();
@@ -23,8 +22,8 @@ public class OnlineSocket
     @OnMessage
     public void onMessage(String message, Session session) throws IOException
     {
-        OnlineModel requestOnline = gson.fromJson(message,OnlineModel.class);
-        OnlineModel responceOnline = new OnlineModel();
+        SocketsModel requestOnline = gson.fromJson(message, SocketsModel.class);
+        SocketsModel responceOnline = new SocketsModel();
         String key = requestOnline.getService();
 
         if(key.equals("Connect"))
