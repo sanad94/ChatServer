@@ -165,6 +165,7 @@ public class ChatService
             String time = image.getTime();
             String fromPhoneNumber = image.getFromPhoneNumber();
             String toPhoneNumber = image.getToPhoneNumber();
+            String muuid = image.getUuid();
             String path = ROOM_IMAGE + image.hashCode();
             File dir = new File(path);
             if(!dir.exists())
@@ -178,7 +179,7 @@ public class ChatService
             imageFile.flush();
             imageFile.close();
             String message = "ImageMessage:"+uuid.toString();
-            MessageOverNetwork messageOverNetwork = new MessageOverNetwork(toPhoneNumber,fromPhoneNumber,message,time);
+            MessageOverNetwork messageOverNetwork = new MessageOverNetwork(fromPhoneNumber,toPhoneNumber,time,message,muuid);
             pushMessage(gson.toJson(messageOverNetwork));
         }
         catch (Exception e)

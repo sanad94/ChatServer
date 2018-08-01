@@ -15,12 +15,15 @@ public class ImageMessageOverNetwork
     private String time ;
     @SerializedName("imageByte")
     private byte [] imageByte;
+    @SerializedName("uuid")
+    private String uuid;
 
-    public ImageMessageOverNetwork(String fromPhoneNumber, String toPhoneNumber, String time, byte[] imageByte) {
+    public ImageMessageOverNetwork(String fromPhoneNumber, String toPhoneNumber, String time, byte[] imageByte, String uuid) {
         this.fromPhoneNumber = fromPhoneNumber;
         this.toPhoneNumber = toPhoneNumber;
         this.time = time;
         this.imageByte = imageByte;
+        this.uuid = uuid;
     }
 
     public ImageMessageOverNetwork() {
@@ -58,9 +61,11 @@ public class ImageMessageOverNetwork
         this.imageByte = imageByte;
     }
 
-    @Override
-    public int hashCode()
-    {
-        return Integer.valueOf(fromPhoneNumber.replaceAll("-","")) * Integer.valueOf(toPhoneNumber.replaceAll("-",""));
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
