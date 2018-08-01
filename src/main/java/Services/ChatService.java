@@ -179,7 +179,7 @@ public class ChatService
             imageFile.flush();
             imageFile.close();
             String message = "ImageMessage:"+uuid.toString();
-            MessageOverNetwork messageOverNetwork = new MessageOverNetwork(fromPhoneNumber,toPhoneNumber,time,message,muuid);
+            MessageOverNetwork messageOverNetwork = new MessageOverNetwork(fromPhoneNumber,toPhoneNumber,time,message,muuid,"");
             pushMessage(gson.toJson(messageOverNetwork));
         }
         catch (Exception e)
