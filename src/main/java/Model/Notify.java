@@ -9,9 +9,9 @@ public class Notify
     @SerializedName("to")
     private String to ;
     @SerializedName("data")
-    private Data data ;
+    private MessageOverNetwork data ;
 
-    public Notify(String to, Data data) {
+    public Notify(String to, MessageOverNetwork data) {
         this.to = to;
         this.data = data;
     }
@@ -28,11 +28,11 @@ public class Notify
         this.to = to;
     }
 
-    public Data getData() {
+    public MessageOverNetwork getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(MessageOverNetwork data) {
         this.data = data;
     }
 }

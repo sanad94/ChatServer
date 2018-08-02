@@ -63,13 +63,31 @@ public class ChatService
     @POST
     public void pushMessage(String messageOverNetwork)
     {
+        System.out.println(messageOverNetwork);
+        Gson gson = new Gson();
+        MessageOverNetwork message = gson.fromJson(messageOverNetwork, MessageOverNetwork.class);
+        if(message.getStatus()==MessageOverNetwork.TOSERVER)
+        {
+            System.out.println("status sent");
+            message.setStatus(MessageOverNetwork.SENT);
+            String fromNumper = message.getToPhoneNumber();
+            String toNumber = message.getFromPhoneNumber();
+            message.setFromPhoneNumber("server");
+            message.setToPhoneNumber(toNumber);
+            System.out.println(gson.toJson(message));
+            sendMessage(gson.toJson(message));
+        }
+        sendMessage(messageOverNetwork);
+    }
+
+    public void sendMessage(String messageOverNetwork)
+    {
         try
         {
             Gson gson = new Gson();
             MessageOverNetwork message = gson.fromJson(messageOverNetwork, MessageOverNetwork.class);
             String userToken = DataFetcher.getUserToken(message.getToPhoneNumber());
-            Data data = new Data(message.getFromPhoneNumber(),message.getTime(),message.getMessage());
-            Notify notify = new Notify(userToken,data);
+            Notify notify = new Notify(userToken,message);
             String write = gson.toJson(notify);
             URL url = new URL(API_URL_FCM);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -179,7 +197,7 @@ public class ChatService
             imageFile.flush();
             imageFile.close();
             String message = "ImageMessage:"+uuid.toString();
-            MessageOverNetwork messageOverNetwork = new MessageOverNetwork(fromPhoneNumber,toPhoneNumber,time,message,muuid,"");
+            MessageOverNetwork messageOverNetwork = new MessageOverNetwork(fromPhoneNumber,toPhoneNumber,time,message,muuid,MessageOverNetwork.TOSERVER);
             pushMessage(gson.toJson(messageOverNetwork));
         }
         catch (Exception e)
