@@ -52,13 +52,15 @@ public class OnlineSocket
     @OnClose
     public void onClose(Session session) throws IOException
     {
+        //
         usersOnline.disConnectUser(session);
         System.out.println("Session " +session.getId()+" has ended");
     }
 
     @OnError
-    public void onError(Session session, Throwable thr)
-    {
+    public void onError(Session session, Throwable thr) throws IOException {
+       usersOnline.disConnectUser(session);
+        System.out.println("Session " +session.getId()+" has ended");
         System.out.println("Session " +session.getId()+" have error");
     }
 

@@ -103,6 +103,10 @@ public class DataFetcher
         searchQuery.put(Users.PhoneNumber.toString(), phoneNumber);
         DBObject doc = collection.findOne(searchQuery);
         Gson gson = new Gson();
+        if(!doc.containsField(Users.ContactList.toString()))
+        {
+            return null;
+        }
         ArrayList<MyContacts> contacts= gson.fromJson(doc.get(Users.ContactList.toString()).toString(), new TypeToken<ArrayList<MyContacts>>() {}.getType());
 
         return contacts;

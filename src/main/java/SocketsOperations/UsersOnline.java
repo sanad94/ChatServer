@@ -50,10 +50,12 @@ public class UsersOnline
         responceOnline.setFromPhoneNumber(phoneNumber);
         Gson gson = new Gson();
         ArrayList<MyContacts> contacts = DataFetcher.getContactList(phoneNumber);
+        if(contacts==null)
+            return;
         for(MyContacts c : contacts)
         {
            Session contactSession =  usersSession.get(c.getPhoneNumber());
-           if(contactSession!=null && session.isOpen())
+           if(contactSession!=null)
            {
                contactSession.getBasicRemote().sendText(gson.toJson(responceOnline));
            }
