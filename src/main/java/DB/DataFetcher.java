@@ -38,8 +38,8 @@ public class DataFetcher
         DB database = MongoConnection.getDB();
         DBCollection collection = database.getCollection(Users.Collection.toString());
         BasicDBObject update = new BasicDBObject();
-        update.append("$set", new BasicDBObject().append(Users.Token.toString(), userToken.getPhoneNumber()));
-        BasicDBObject searchQuery = new BasicDBObject().append(Users.Token.toString(), userToken.getToken());
+        update.append("$set", new BasicDBObject().append(Users.Token.toString(), userToken.getToken()));
+        BasicDBObject searchQuery = new BasicDBObject().append(Users.Token.toString(), userToken.getPhoneNumber());
         collection.update(searchQuery, update);
 
     }
@@ -67,12 +67,12 @@ public class DataFetcher
     }
 
 
-    public static ArrayList<MyContacts> validateContactList(ArrayList<MyContacts> contacts)
+    public static ArrayList<MyContacts> validateContactList(String userphoneNumber,ArrayList<MyContacts> contacts)
     {
         ArrayList<MyContacts> validateContactList = new ArrayList<>();
         DB database = MongoConnection.getDB();
         DBCollection collection = database.getCollection(Users.Collection.toString());
-
+        ArrayList<DBObject> listTosave = new ArrayList<>();
         for (int i = 0 ; i < contacts.size() ; i++ )
         {
             MyContacts myContacts=contacts.get(i);
@@ -82,10 +82,15 @@ public class DataFetcher
             DBObject doc = collection.findOne(fields);
             if(doc!=null)
             {
+                listTosave.add(doc);
                 myContacts.setPhoneNumber(number);
                 validateContactList.add(myContacts);
             }
         }
+        BasicDBObject update = new BasicDBObject();
+        update.append("$set", new BasicDBObject().append(Users.ContactList.toString(),listTosave));
+        BasicDBObject searchQuery = new BasicDBObject().append(Users.PhoneNumber.toString(),userphoneNumber);
+        collection.update(searchQuery, update);
         return validateContactList;
     }
 

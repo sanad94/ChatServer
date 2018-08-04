@@ -113,14 +113,14 @@ public class ChatService
         }
     }
 
-    @Path("/SendContactList")
+    @Path("/SendContactList/{userphoneNumber}")
     @POST
-    public String SendContactList(String contactList) throws SQLException
+    public String SendContactList(@PathParam("userphoneNumber") String userphoneNumber,String contactList) throws SQLException
     {
         System.out.print(contactList);
         Gson gson = new Gson();
         ArrayList<MyContacts> contactsLinkedList = gson.fromJson(contactList, new TypeToken<ArrayList<MyContacts>>() {}.getType());
-        ArrayList<MyContacts> validateContactList = DataFetcher.validateContactList(contactsLinkedList);
+        ArrayList<MyContacts> validateContactList = DataFetcher.validateContactList(userphoneNumber,contactsLinkedList);
         String json = gson.toJson(validateContactList);
         System.out.print(json);
         return json;

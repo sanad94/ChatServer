@@ -4,7 +4,8 @@ public enum Users
 {
     Collection("users"),
     PhoneNumber("phoneNumber"),
-    Token("token")
+    Token("token"),
+    ContactList("contactList")
     ;
 
     private final String text;
