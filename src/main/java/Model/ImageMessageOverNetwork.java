@@ -68,4 +68,11 @@ public class ImageMessageOverNetwork
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    @Override
+    public int hashCode() {
+        String from = fromPhoneNumber.replace("-","");
+        String to = toPhoneNumber.replace("-","");
+        return Integer.valueOf(from) * Integer.valueOf(to);
+    }
 }

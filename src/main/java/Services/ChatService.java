@@ -21,9 +21,9 @@ import java.util.UUID;
 @Path("ChatService")
 public class ChatService
 {
-    private final  static String USER_DEFAULT_IMAGE = "C:\\Users\\2017\\intelijProject\\chatApp\\UsersImage\\default.jpg";
-    private final  static String USER_IMAGE = "C:\\Users\\2017\\intelijProject\\chatApp\\UsersImage\\";
-    private final  static String ROOM_IMAGE = "C:\\Users\\2017\\intelijProject\\chatApp\\RoomImage\\";
+    private final  static String USER_DEFAULT_IMAGE = "/Projects/JavaProjects/ChatServer/UsersImage/default.jpg";
+    private final  static String USER_IMAGE = "/Projects/JavaProjects/ChatServer/UsersImage/";
+    private final  static String ROOM_IMAGE = "/Projects/JavaProjects/RoomImage/";
     private final  static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     private final  static String AUTH_KEY_FCM = "AAAAv0wpI3I:APA91bGnomehpgdXdkoBVBo1BlEhF-OSKe2XDECDhj5M7pHmbGTi2i4kiV4M68v5l7adY71_An5YyGjGAs1Zqp7KeSrGS2kLOOUTBs-XrmPqnkaZvazxkqXWsmUsWPN1L21wF_ZHv7Dz";
 
@@ -72,7 +72,7 @@ public class ChatService
             message.setStatus(MessageOverNetwork.SENT);
             String fromNumper = message.getToPhoneNumber();
             String toNumber = message.getFromPhoneNumber();
-            message.setFromPhoneNumber("server");
+            message.setFromPhoneNumber(fromNumper);
             message.setToPhoneNumber(toNumber);
             System.out.println(gson.toJson(message));
             sendMessage(gson.toJson(message));
@@ -147,7 +147,7 @@ public class ChatService
         ImageMessageOverNetwork image = new ImageMessageOverNetwork();
         image.setToPhoneNumber(toPhoneNumber);
         image.setFromPhoneNumber(fromPhoneNumber);
-        String path = ROOM_IMAGE + image.hashCode()+"\\"+uuid+".jpg";
+        String path = ROOM_IMAGE + image.hashCode()+"/"+uuid+".jpg";
         File imageFile = new File(path);
         if(!imageFile.exists())
         {
@@ -192,7 +192,7 @@ public class ChatService
             }
             UUID uuid = UUID.randomUUID();
             OutputStream imageFile = null;
-            imageFile = new FileOutputStream(path +"\\"+ uuid.toString()+ ".jpg");
+            imageFile = new FileOutputStream(path +"/"+ uuid.toString()+ ".jpg");
             imageFile.write(image.getImageByte());
             imageFile.flush();
             imageFile.close();
