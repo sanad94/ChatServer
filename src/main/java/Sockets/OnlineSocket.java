@@ -37,6 +37,8 @@ public class OnlineSocket
             String status = usersOnline.isUserConnected(myNumber,hisNumber);
             responceOnline.setService("IsConnected");
             responceOnline.setStatus(status);
+            responceOnline.setFromPhoneNumber(hisNumber);
+            responceOnline.setToPhoneNumber(myNumber);
             session.getBasicRemote().sendText(gson.toJson(responceOnline));
             System.out.println("Message retrive " + session.getId() + ": " + status);
         }
