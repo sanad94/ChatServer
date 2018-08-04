@@ -4,6 +4,7 @@ import Model.MyContacts;
 import Model.UsersTokens;
 import MongoCollections.Users;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mongodb.*;
 import com.mongodb.util.JSON;
 
@@ -82,7 +83,7 @@ public class DataFetcher
             DBObject doc = collection.findOne(fields);
             if(doc!=null)
             {
-                listTosave.add(doc);
+                listTosave.add(new BasicDBObject().append(Users.PhoneNumber.toString(),number));
                 myContacts.setPhoneNumber(number);
                 validateContactList.add(myContacts);
             }
@@ -94,5 +95,16 @@ public class DataFetcher
         return validateContactList;
     }
 
+    public static ArrayList<MyContacts> getContactList(String phoneNumber)
+    {
+        DB database = MongoConnection.getDB();
+        DBCollection collection = database.getCollection(Users.Collection.toString());
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put(Users.PhoneNumber.toString(), phoneNumber);
+        DBObject doc = collection.findOne(searchQuery);
+        Gson gson = new Gson();
+        ArrayList<MyContacts> contacts= gson.fromJson(doc.get(Users.ContactList.toString()).toString(), new TypeToken<ArrayList<MyContacts>>() {}.getType());
 
+        return contacts;
+    }
 }
