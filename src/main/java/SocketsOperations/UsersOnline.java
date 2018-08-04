@@ -1,8 +1,11 @@
 package SocketsOperations;
 
+import DB.DataFetcher;
+import Model.MyContacts;
 import Model.SocketsModel;
 import com.google.gson.Gson;
 import javax.websocket.Session;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,7 +22,6 @@ public class UsersOnline
     public void connectUser(String phoneNumber , Session session)
     {
         onlineUsers.put(phoneNumber,"online");
-        onlineUsers.put("059-965-1075","Pm 11:30 12/5/2017 ");
         usersSession.put(phoneNumber,session);
         sessionKey.put(session.getId(),phoneNumber);
     }
@@ -27,19 +29,10 @@ public class UsersOnline
     public String isUserConnected(String myNumber , String hisNumber)
     {
         String status = onlineUsers.get(hisNumber);
-        if(updateUsers.containsKey(myNumber))
+        if (status==null)
         {
-            ArrayList<String> relatedUsers = updateUsers.get(myNumber);
-            relatedUsers.add(hisNumber);
-            updateUsers.put(myNumber,relatedUsers);
+            status = " ";
         }
-        else
-        {
-            ArrayList<String> relatedUsers = new ArrayList<>();
-            relatedUsers.add(hisNumber);
-            updateUsers.put(myNumber,relatedUsers);
-        }
-
         return status;
     }
 
@@ -50,25 +43,21 @@ public class UsersOnline
         Date date = new Date();
         String status = dateformat.format(date);
         onlineUsers.put(phoneNumber,status);
-        ArrayList<String> relatedUsers = updateUsers.get(phoneNumber);
+        //ArrayList<String> relatedUsers = updateUsers.get(phoneNumber);
         SocketsModel responceOnline = new SocketsModel();
         responceOnline.setService("OffLine");
         responceOnline.setStatus(status);
         responceOnline.setFromPhoneNumber(phoneNumber);
         Gson gson = new Gson();
-        if(relatedUsers==null)
+        ArrayList<MyContacts> contacts = DataFetcher.getContactList(phoneNumber);
+        for(MyContacts c : contacts)
         {
-            return;
-        }
-        for(String key : relatedUsers)
-        {
-           Session contactSession =  usersSession.get(key);
-           if(contactSession!=null)
+           Session contactSession =  usersSession.get(c.getPhoneNumber());
+           if(contactSession!=null && session.isOpen())
            {
                contactSession.getBasicRemote().sendText(gson.toJson(responceOnline));
            }
         }
-        updateUsers.remove(phoneNumber);
         usersSession.remove(phoneNumber);
         sessionKey.remove(session.getId());
     }
