@@ -69,10 +69,10 @@ public class ImageMessageOverNetwork
         this.uuid = uuid;
     }
 
-    @Override
-    public int hashCode() {
-        String from = fromPhoneNumber.replace("-","");
-        String to = toPhoneNumber.replace("-","");
-        return Integer.valueOf(from) * Integer.valueOf(to);
-    }
+public long ImageHashCode()
+{
+    String from = fromPhoneNumber.replace("-","");
+    String to = toPhoneNumber.replace("-","");
+    return Long.valueOf(from) * Long.valueOf(to);
+}
 }

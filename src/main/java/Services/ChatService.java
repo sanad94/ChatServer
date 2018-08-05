@@ -3,6 +3,7 @@ package Services;
 import DB.DataFetcher;
 import DB.Operations;
 import Model.*;
+import VirtualAgent.Agent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -41,6 +42,10 @@ public class ChatService
         Gson gson = new Gson();
         UsersTokens userToken = gson.fromJson(usersTokens, UsersTokens.class);
         DataFetcher.insertNewUser(userToken);
+        MessageOverNetwork message = new MessageOverNetwork();
+        message.setToPhoneNumber(userToken.getPhoneNumber());
+        message.setFromPhoneNumber(userToken.getPhoneNumber());
+        Agent.run(message,Agent.FIRST_RUN_STATE);
     }
 
     @Path("/DeleteUser/{phoneNumber}")
@@ -63,21 +68,29 @@ public class ChatService
     @POST
     public void pushMessage(String messageOverNetwork)
     {
+
         System.out.println(messageOverNetwork);
         Gson gson = new Gson();
         MessageOverNetwork message = gson.fromJson(messageOverNetwork, MessageOverNetwork.class);
-        if(message.getStatus()==MessageOverNetwork.TOSERVER)
+        if(Agent.isToAgent(message))
         {
-            System.out.println("status sent");
-            message.setStatus(MessageOverNetwork.SENT);
-            String fromNumper = message.getToPhoneNumber();
-            String toNumber = message.getFromPhoneNumber();
-            message.setFromPhoneNumber(fromNumper);
-            message.setToPhoneNumber(toNumber);
-            System.out.println(gson.toJson(message));
-            sendMessage(gson.toJson(message));
+            Agent.run(message,Agent.NORMAL_STATE);
         }
-        sendMessage(messageOverNetwork);
+        else
+        {
+            if(message.getStatus()==MessageOverNetwork.TOSERVER)
+            {
+                System.out.println("status sent");
+                message.setStatus(MessageOverNetwork.SENT);
+                String fromNumper = message.getToPhoneNumber();
+                String toNumber = message.getFromPhoneNumber();
+                message.setFromPhoneNumber(fromNumper);
+                message.setToPhoneNumber(toNumber);
+                System.out.println(gson.toJson(message));
+                sendMessage(gson.toJson(message));
+            }
+            sendMessage(messageOverNetwork);
+        }
     }
 
     public void sendMessage(String messageOverNetwork)
@@ -147,7 +160,7 @@ public class ChatService
         ImageMessageOverNetwork image = new ImageMessageOverNetwork();
         image.setToPhoneNumber(toPhoneNumber);
         image.setFromPhoneNumber(fromPhoneNumber);
-        String path = ROOM_IMAGE + image.hashCode()+"/"+uuid+".jpg";
+        String path = ROOM_IMAGE + image.ImageHashCode()+"/"+uuid+".jpg";
         File imageFile = new File(path);
         if(!imageFile.exists())
         {
