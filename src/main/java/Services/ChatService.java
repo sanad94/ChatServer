@@ -45,7 +45,13 @@ public class ChatService
         MessageOverNetwork message = new MessageOverNetwork();
         message.setToPhoneNumber(userToken.getPhoneNumber());
         message.setFromPhoneNumber(userToken.getPhoneNumber());
-        Agent.run(message,Agent.FIRST_RUN_STATE);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Agent.run(message,Agent.FIRST_RUN_STATE);
+            }
+        });
+        t.start();
     }
 
     @Path("/DeleteUser/{phoneNumber}")

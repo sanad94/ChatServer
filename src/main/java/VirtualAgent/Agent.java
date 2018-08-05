@@ -22,13 +22,13 @@ public class Agent
 
     public static boolean isToAgent(MessageOverNetwork message)
     {
-        Agent firstCheck = TasksScahdule.getAgent(message.getFromPhoneNumber());
-        Agent secondCheck = TasksScahdule.getAgent(message.getToPhoneNumber());
-        if(firstCheck!=null && firstCheck.getAgentPhonrNumber().equals(message.getToPhoneNumber()))
+        Agent check = TasksScahdule.getAgent(message.getFromPhoneNumber());
+
+        if(check!=null && check.getAgentPhonrNumber().equals(message.getToPhoneNumber()))
         {
             return true;
         }
-        else if(secondCheck!=null && secondCheck.getAgentPhonrNumber().equals(message.getFromPhoneNumber()))
+        else if(check!=null && check.getAgentPhonrNumber().equals(message.getFromPhoneNumber()))
         {
             return true;
         }
@@ -74,8 +74,8 @@ public class Agent
             String from = agentPhonrNumber;
             message.setToPhoneNumber(to);
             message.setFromPhoneNumber(from);
-            tasks.executeTask();
             tasks.setMessage(message);
+            tasks.executeTask();
         }
 
     }

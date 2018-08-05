@@ -42,7 +42,7 @@ public class UsersOnline
         SimpleDateFormat dateformat = new SimpleDateFormat("dd-MMM-yyyy hh:mm aa");
         Date date = new Date();
         String status = dateformat.format(date);
-        onlineUsers.put(phoneNumber,status);
+         onlineUsers.put(phoneNumber,status);
         //ArrayList<String> relatedUsers = updateUsers.get(phoneNumber);
         SocketsModel responceOnline = new SocketsModel();
         responceOnline.setService("OffLine");

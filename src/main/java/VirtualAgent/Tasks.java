@@ -60,34 +60,55 @@ public class Tasks
         try {
 
 
-            // add listener
-            clientEndPoint.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
-                public void handleMessage(String message) {
-                    System.out.println(message);
-                }
-            });
-
             // send message to websocket
-            clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
+            clientEndPoint.sendMessage(str);
 
             // wait 5 seconds for messages from websocket
-            Thread.sleep(5000);
+            Thread.sleep(0);
 
         } catch (InterruptedException ex) {
             System.err.println("InterruptedException exception: " + ex.getMessage());
     }
     }
 
+    private void connectToSocket() throws URISyntaxException {
+        typingSession = new WebsocketClientEndpoint(new URI(BASE_URL_TYPING_SOCKET));
+        onliSession =  new WebsocketClientEndpoint(new URI(BASE_URL_Online_SOCKET));
+        typingSession.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
+            public void handleMessage(String message) {
+                System.out.println(message);
+            }
+        });
+        onliSession.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
+            public void handleMessage(String message) {
+                System.out.println(message);
+            }
+        });
+        SocketsModel socketsModel = new SocketsModel();
+        socketsModel.setService("Connect");
+        socketsModel.setFromPhoneNumber(fromPhoneNumber);
+        String on = gson.toJson(socketsModel);
+       try {
+           socketMessage(on,onliSession);
+           socketMessage(on,typingSession);
+       }
+       catch (Exception ex)
+       {
+           ex.printStackTrace();
+
+       }
+    }
+
     public void init()
     {
+        gson = new Gson();
         try {
-            typingSession = new WebsocketClientEndpoint(new URI(BASE_URL_Online_SOCKET));
-            onliSession =  new WebsocketClientEndpoint(new URI(BASE_URL_TYPING_SOCKET));
+            connectToSocket();
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        gson = new Gson();
+
         String [] task1 = new String[] {"Welcome On Board :) I am your Virtual Agent I am gonna help you " +
                 "to tour the app !! how's that going ? you need to reply to  my message " +
                 "it doesn't matter what you write. lets take a example " +
@@ -101,7 +122,7 @@ public class Tasks
         String[] task5 = new String[] {"Online:true","nice .. send me a message to show you that message delivered"};
         String[] task6 = new String[] {"Status:3"};
         String[] task7 = new String[] {"nice .. send me a message to show you that message read by me"};
-        String[] task8 = new String[] {"Status:3"};
+        String[] task8 = new String[] {"Status:4"};
         String[] task9 = new String[] {"go back and clik on my pic it will open it .."};
         String[] task10 = new String[] {"go back and clik on search now you can search by name , even using a phone number .."};
         String[] task11 = new String[] {"You can do the same thing in contacts search and click pics "};
@@ -186,14 +207,7 @@ public class Tasks
             senHttp(m);
         }
     }
-    private void connectToSocket()
-    {
-        SocketsModel socketsModel = new SocketsModel();
-        socketsModel.setService("Connect");
-        socketsModel.setFromPhoneNumber(fromPhoneNumber);
-        this.socketMessage(gson.toJson(socketsModel),onliSession);
-        this.socketMessage(gson.toJson(socketsModel),typingSession);
-    }
+
     private void enableOrdisableTyping(boolean typing)
     {
         SocketsModel socketsModel = new SocketsModel();
@@ -217,10 +231,10 @@ public class Tasks
         {
             try {
                 typingSession.getUserSession().close();
-            } catch (IOException e) {
+            connectToSocket();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            connectToSocket();
         }
         else
         {
@@ -294,7 +308,6 @@ public class Tasks
             String time = image.getTime();
             String fromPhoneNumber = image.getFromPhoneNumber();
             String toPhoneNumber = image.getToPhoneNumber();
-            String muuid = image.getUuid();
             String path = ROOM_IMAGE + image.ImageHashCode();
             File dir = new File(path);
             if(!dir.exists())
@@ -308,7 +321,7 @@ public class Tasks
             imageFile.flush();
             imageFile.close();
             String message = "ImageMessage:"+uuid.toString();
-             messageOverNetwork = new MessageOverNetwork(fromPhoneNumber,toPhoneNumber,time,message,muuid,MessageOverNetwork.TOSERVER);
+             messageOverNetwork = new MessageOverNetwork(fromPhoneNumber,toPhoneNumber,time,message,uuid.toString(),MessageOverNetwork.SENT);
             }
         catch (Exception e)
         {
