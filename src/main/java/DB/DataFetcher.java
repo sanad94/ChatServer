@@ -111,4 +111,28 @@ public class DataFetcher
 
         return contacts;
     }
+
+    public static void insertVirtualAgent(String agentNumber , String userphoneNumber)
+    {
+             DB database = MongoConnection.getDB();
+             DBCollection collection = database.getCollection(Users.Collection.toString());
+             BasicDBObject update = new BasicDBObject();
+             update.append("$set", new BasicDBObject().append(Users.VirtualAgent.toString(),agentNumber));
+             BasicDBObject searchQuery = new BasicDBObject().append(Users.PhoneNumber.toString(),userphoneNumber);
+             collection.update(searchQuery, update);
+    }
+
+    public static String getAgentNumber(String userphoneNumber)
+    {
+        DB database = MongoConnection.getDB();
+        DBCollection collection = database.getCollection(Users.Collection.toString());
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put(Users.PhoneNumber.toString(), userphoneNumber);
+        DBObject doc = collection.findOne(searchQuery);
+        if(doc.containsField(Users.VirtualAgent.toString()))
+        {
+            return doc.get(Users.VirtualAgent.toString()).toString();
+        }
+        return null;
+    }
 }

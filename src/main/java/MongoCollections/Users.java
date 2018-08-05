@@ -5,7 +5,8 @@ public enum Users
     Collection("users"),
     PhoneNumber("phoneNumber"),
     Token("token"),
-    ContactList("contactList")
+    ContactList("contactList"),
+    VirtualAgent("VirtualAgent")
     ;
 
     private final String text;

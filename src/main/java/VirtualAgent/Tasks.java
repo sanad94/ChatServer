@@ -204,7 +204,7 @@ public class Tasks
         for (MessageOverNetwork m: task_message)
         {
             System.out.println("from agent "+ gson.toJson(m));
-            senHttp(m);
+            sendHttp(m);
         }
     }
 
@@ -245,7 +245,7 @@ public class Tasks
             }
         }
     }
-    public void senHttp(MessageOverNetwork message)
+    public void sendHttp(MessageOverNetwork message)
     {
 
         try
