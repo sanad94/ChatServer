@@ -30,7 +30,7 @@ public class Tasks
     private WebsocketClientEndpoint onliSession;
     private Gson gson ;
     private MessageOverNetwork message ;
-    private static final String IP_ADDRESS = "10.0.0.13";
+    private static final String IP_ADDRESS = "10.0.0.14";
     public static final String BASE_URL_Online_SOCKET = "ws://"+IP_ADDRESS+":9090/OnlineSocket";
     public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":9090/TypingSocket";
     public static final String BASE_URL_SERVER = "http://"+IP_ADDRESS+":9090/ChatService/PushMessage";

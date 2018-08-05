@@ -203,7 +203,7 @@ public class ChatService
             String fromPhoneNumber = image.getFromPhoneNumber();
             String toPhoneNumber = image.getToPhoneNumber();
             String muuid = image.getUuid();
-            String path = ROOM_IMAGE + image.hashCode();
+            String path = ROOM_IMAGE + image.ImageHashCode();
             File dir = new File(path);
             if(!dir.exists())
             {
