@@ -82,7 +82,9 @@ public class ChatService
         System.out.println(messageOverNetwork);
         Gson gson = new Gson();
         MessageOverNetwork message = gson.fromJson(messageOverNetwork, MessageOverNetwork.class);
-        if(Agent.isToAgent(message))
+        boolean istoagent= Agent.isToAgent(message);
+        System.out.println(Agent.isToAgent(message));
+        if(istoagent)
         {
             System.out.println("MessageToAgent");
             Agent.run(message,Agent.NORMAL_STATE);
