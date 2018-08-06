@@ -206,13 +206,18 @@ public class Tasks
         return tasks_message;
     }
 
-    public void executeTask() throws InterruptedException {
+    public void executeTask()
+    {
         MessageOverNetwork[] task_message = prepareTask();
         for (MessageOverNetwork m: task_message)
         {
             System.out.println("from agent "+ gson.toJson(m));
             sendHttp(m);
-            Thread.sleep(3000);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
