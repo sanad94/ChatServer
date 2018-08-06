@@ -35,7 +35,7 @@ public class ChatService
     @GET
     public String defaults()
     {System.out.print("so");
-        return DataFetcher.getUserToken("050-422-9524");
+        return DataFetcher.getUserToken("1");
 
     }
 
