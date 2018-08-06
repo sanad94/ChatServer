@@ -31,12 +31,12 @@ public class Tasks
     private Gson gson ;
     private MessageOverNetwork message ;
     //local
-/*    private static final String IP_ADDRESS = "10.0.0.14";
+    private static final String IP_ADDRESS = "10.0.0.14";
     public static final String BASE_URL_Online_SOCKET = "ws://"+IP_ADDRESS+":9090/OnlineSocket";
-    public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":9090/TypingSocket";*/
-    private static final String IP_ADDRESS = "10.142.0.2";
+    public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":9090/TypingSocket";
+   /* private static final String IP_ADDRESS = "10.142.0.2";
     public static final String BASE_URL_Online_SOCKET = "ws://"+IP_ADDRESS+":8080/ChatServer-1.0-SNAPSHOT/OnlineSocket";
-    public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":8080/ChatServer-1.0-SNAPSHOT/TypingSocket";
+    public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":8080/ChatServer-1.0-SNAPSHOT/TypingSocket";*/
     private final  static String ROOM_IMAGE = "/Projects/JavaProjects/RoomImage/";
     private final  static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     private final  static String AUTH_KEY_FCM = "AAAAv0wpI3I:APA91bGnomehpgdXdkoBVBo1BlEhF-OSKe2XDECDhj5M7pHmbGTi2i4kiV4M68v5l7adY71_An5YyGjGAs1Zqp7KeSrGS2kLOOUTBs-XrmPqnkaZvazxkqXWsmUsWPN1L21wF_ZHv7Dz";
@@ -52,7 +52,7 @@ public class Tasks
     {
         if(tasks.size()-1 == looper)
         {
-            looper = 0 ;
+           TasksScahdule.removeAgent(toPhoneNumber);
         }
     }
 
@@ -110,27 +110,32 @@ public class Tasks
             e.printStackTrace();
         }
 
-        String [] task1 = new String[] {"Welcome On Board :) I am your Virtual Agent I am gonna help you " +
-                "to tour the app !! how's that going ? you need to reply to  my message " +
-                "it doesn't matter what you write. lets take a example " +
-                "me : Welcome On ..." +
-                "You: funy !" +
-                "me : now Iam Typing check status in the top of chat Room under pohone number" +
-                "are You ready ? okay here we go"};
-        String[] task2 = new String[]{"Its the time for image message check the next message","ImageMessage:"};
-        String[] task3 = new String[]{"Typing:true","Iam Typing Check that","Check last Seen in the top of the app under phone number"};
-        String[] task4 = new String[] {"Typing:false","Online:false","ops i am busy , will chitchat again ","Check last Seen in the top of the app under phone number"};
-        String[] task5 = new String[] {"Online:true","nice .. send me a message to show you that message delivered"};
-        String[] task6 = new String[] {"Status:3"};
-        String[] task7 = new String[] {"nice .. send me a message to show you that message read by me"};
-        String[] task8 = new String[] {"Status:4"};
-        String[] task9 = new String[] {"go back and clik on my pic it will open it .."};
-        String[] task10 = new String[] {"go back and clik on search now you can search by name , even using a phone number .."};
-        String[] task11 = new String[] {"You can do the same thing in contacts search and click pics "};
-        String[] task12 = new String[] {"You can send image message by clicking image button , wait you need to give us a permision go " +
-                                        "to the settings its will ask you for that but if you denied you need to do it manuualy from phone settings,"
-                                        ,"ops i forgot to say you can share your pic with other friends go to settings and click on defailt image and chose"};
-        String[] task13 = new String[] {"good , go to contacts and pull the ui down it will uplod your contact to validate them","that's it for now i hope You enjoy ... next message you send will start conversation (loop)"};
+        String [] task1 = new String[] {"Hey,\n" +
+                "I am your Virtual Agent" +
+                "\n I am gonna help you " +
+                "\nto tour the app !! " +
+                "\nHow's that going ?" +
+                "\nyou need to reply to my messages " +
+                "\nIt doesn't matter what you write." +
+                "\nlets take a example:" +
+                "\nMe : Welcome On ..." +
+                "\nYou: funy !" +
+                "\nMe : Iam Typing check that at the top ot the App" +
+                "\nAre You ready ? Okay here we go :) "};
+        String[] task2 = new String[]{"Its time for image message, check the next message","ImageMessage:"};
+        String[] task3 = new String[]{"Typing:true","Iam Typing Check that"};
+        String[] task4 = new String[] {"Typing:false","Online:false","Ops I am a little bit busy , We will chitchat again ","Check last Seen at the top of the app"};
+        String[] task5 = new String[] {"Online:true","Nice .. send me a message to show you that message delivered"};
+        String[] task6 = new String[] {"Status:3","You saw that ? "};
+        String[] task7 = new String[] {"Good .. send me a message to show you that message seen"};
+        String[] task8 = new String[] {"Status:4","You saw tahat"};
+        String[] task9 = new String[] {"You can see my photo .\n go back and click on it will"};
+        String[] task10 = new String[] {"You can search !!,\n go back and click on search bar you can search by name , even by phone number"};
+        String[] task11 = new String[] {"You can do the same thing for contacts, searching and showing  pics "};
+        String[] task12 = new String[] {"You can send image message by clicking image button , wait you need to give us a permission go " +
+                                        "to the settings it will ask you for that but if you denied you need to do it manually from phone settings,"
+                                        ,"ops I forgot to say you can share your photo with other friends go to settings and click on default image and choose"};
+        String[] task13 = new String[] {"good , go to contacts and pull the UI down it will uplod your contact to validate them","that's it for now i hope You enjoy ... next message you send will start conversation (loop)"};
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);

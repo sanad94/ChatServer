@@ -51,5 +51,10 @@ public class TasksScahdule
         return userssAgent.get(userPhoneNumber);
     }
 
+    public static void removeAgent(String number)
+    {
+        userssAgent.remove(number);
+    }
+
 
 }

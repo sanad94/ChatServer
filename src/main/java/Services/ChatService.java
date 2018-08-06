@@ -84,6 +84,7 @@ public class ChatService
         MessageOverNetwork message = gson.fromJson(messageOverNetwork, MessageOverNetwork.class);
         if(Agent.isToAgent(message))
         {
+            System.out.println("MessageToAgent");
             Agent.run(message,Agent.NORMAL_STATE);
         }
         else
@@ -99,6 +100,7 @@ public class ChatService
                 System.out.println(gson.toJson(message));
                 sendMessage(gson.toJson(message));
             }
+            System.out.println("---senMessage");
             sendMessage(messageOverNetwork);
         }
     }
@@ -107,12 +109,14 @@ public class ChatService
     {
         try
         {
+            System.out.println("---insideSendMessage");
             Gson gson = new Gson();
             MessageOverNetwork message = gson.fromJson(messageOverNetwork, MessageOverNetwork.class);
             String userToken = DataFetcher.getUserToken(message.getToPhoneNumber());
             Notify notify = new Notify(userToken,message);
             String write = gson.toJson(notify);
             URL url = new URL(API_URL_FCM);
+            System.out.println("---setupConnection");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setUseCaches(false);
             connection.setDoInput(true);
@@ -122,8 +126,8 @@ public class ChatService
             connection.setRequestProperty("Authorization","key="+AUTH_KEY_FCM);
             connection.setRequestProperty("Content-Type","application/json; charset=utf-8");
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream(),"utf-8");
-            outputStreamWriter.write(write);
-            outputStreamWriter.flush();
+            outputStreamWriter.write(write);System.out.println("---write");
+            outputStreamWriter.flush();System.out.println("---flush");
             connection.getInputStream();
         }
         catch (MalformedURLException e)
