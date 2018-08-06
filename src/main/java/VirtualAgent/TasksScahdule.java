@@ -25,11 +25,17 @@ public class TasksScahdule
 
     public static boolean isToAgent(String userphoneNumber , String toPhoneNumber)
     {
+
         if(userssAgent.containsKey(userphoneNumber))
         {
-            return true;
+            Agent a = userssAgent.get(userphoneNumber);
+            if(a.getAgentPhonrNumber().equals(toPhoneNumber))
+            {
+                return true;
+            }
+
         }
-        else if(DataFetcher.getAgentNumber(userphoneNumber).equals(toPhoneNumber))
+         if(DataFetcher.getAgentNumber(userphoneNumber).equals(toPhoneNumber))
         {
             return true;
         }

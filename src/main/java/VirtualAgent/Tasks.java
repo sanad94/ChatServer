@@ -130,7 +130,7 @@ public class Tasks
         String[] task5 = new String[] {"Online:true","Nice .. send me a message to show you that message delivered"};
         String[] task6 = new String[] {"Status:3","You saw that ? "};
         String[] task7 = new String[] {"Good .. send me a message to show you that message seen"};
-        String[] task8 = new String[] {"Status:4","You saw tahat"};
+        String[] task8 = new String[] {"Status:4","You saw that"};
         String[] task9 = new String[] {"You can see my photo .\n go back and click on it will"};
         String[] task10 = new String[] {"You can search !!,\n go back and click on search bar you can search by name , even by phone number"};
         String[] task11 = new String[] {"You can do the same thing for contacts, searching and showing  pics "};
@@ -206,13 +206,13 @@ public class Tasks
         return tasks_message;
     }
 
-    public void executeTask()
-    {
+    public void executeTask() throws InterruptedException {
         MessageOverNetwork[] task_message = prepareTask();
         for (MessageOverNetwork m: task_message)
         {
             System.out.println("from agent "+ gson.toJson(m));
             sendHttp(m);
+            Thread.sleep(3000);
         }
     }
 
