@@ -30,15 +30,16 @@ public class Tasks
     private WebsocketClientEndpoint onliSession;
     private Gson gson ;
     private MessageOverNetwork message ;
-    private static final String IP_ADDRESS = "10.0.0.14";
+    //local
+/*    private static final String IP_ADDRESS = "10.0.0.14";
     public static final String BASE_URL_Online_SOCKET = "ws://"+IP_ADDRESS+":9090/OnlineSocket";
-    public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":9090/TypingSocket";
-    public static final String BASE_URL_SERVER = "http://"+IP_ADDRESS+":9090/ChatService/PushMessage";
+    public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":9090/TypingSocket";*/
+    private static final String IP_ADDRESS = "10.142.0.2";
+    public static final String BASE_URL_Online_SOCKET = "ws://"+IP_ADDRESS+":8080/ChatServer-1.0-SNAPSHOT/OnlineSocket";
+    public static final String BASE_URL_TYPING_SOCKET = "ws://"+IP_ADDRESS+":8080/ChatServer-1.0-SNAPSHOT/TypingSocket";
     private final  static String ROOM_IMAGE = "/Projects/JavaProjects/RoomImage/";
     private final  static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     private final  static String AUTH_KEY_FCM = "AAAAv0wpI3I:APA91bGnomehpgdXdkoBVBo1BlEhF-OSKe2XDECDhj5M7pHmbGTi2i4kiV4M68v5l7adY71_An5YyGjGAs1Zqp7KeSrGS2kLOOUTBs-XrmPqnkaZvazxkqXWsmUsWPN1L21wF_ZHv7Dz";
-
-
     public Tasks(String fromPhoneNumber , String toPhoneNumber)
     {
         this.fromPhoneNumber = fromPhoneNumber ;

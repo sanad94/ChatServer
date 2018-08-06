@@ -22,8 +22,12 @@ import java.util.UUID;
 @Path("ChatService")
 public class ChatService
 {
-    private final  static String USER_DEFAULT_IMAGE = "/Projects/JavaProjects/ChatServer/UsersImage/default.jpg";
+    //local path
+ /*   private final  static String USER_DEFAULT_IMAGE = "/Projects/JavaProjects/ChatServer/UsersImage/default.jpg";
     private final  static String USER_IMAGE = "/Projects/JavaProjects/ChatServer/UsersImage/";
+    private final  static String ROOM_IMAGE = "/Projects/JavaProjects/RoomImage/";*/
+    private final  static String USER_DEFAULT_IMAGE = "/Projects/JavaProjects/UsersImage/default.jpg";
+    private final  static String USER_IMAGE = "/Projects/JavaProjects/UsersImage/";
     private final  static String ROOM_IMAGE = "/Projects/JavaProjects/RoomImage/";
     private final  static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     private final  static String AUTH_KEY_FCM = "AAAAv0wpI3I:APA91bGnomehpgdXdkoBVBo1BlEhF-OSKe2XDECDhj5M7pHmbGTi2i4kiV4M68v5l7adY71_An5YyGjGAs1Zqp7KeSrGS2kLOOUTBs-XrmPqnkaZvazxkqXWsmUsWPN1L21wF_ZHv7Dz";
@@ -31,7 +35,7 @@ public class ChatService
     @GET
     public String defaults()
     {System.out.print("so");
-        return "please specify which service you want" ;
+        return DataFetcher.getUserToken("050-422-9524");
 
     }
 
